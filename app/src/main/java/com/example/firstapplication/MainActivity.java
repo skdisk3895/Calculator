@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_display, tv_result;
@@ -90,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 String currentString = tv_display.getText().toString();
                 if (currentString.length() == 0) return;
                 String deletedString = currentString.substring(0, currentString.length()-1);
+                display = display.substring(0, display.length()-1);
                 tv_display.setText(deletedString);
             }
         });
