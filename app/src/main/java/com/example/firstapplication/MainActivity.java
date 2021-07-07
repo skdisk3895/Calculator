@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_display, tv_result;
-    private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear;
+    private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete;
     private String display = "";
 
     @Override
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         btn_mult = findViewById(R.id.btn_mult);
         btn_div = findViewById(R.id.btn_div);
         btn_res = findViewById(R.id.btn_res);
+        btn_delete = findViewById(R.id.btn_delete);
         btn_clear = findViewById(R.id.btn_clear);
         btn_zero = findViewById(R.id.btn_zero);
         btn_one = findViewById(R.id.btn_one);
@@ -47,6 +48,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                display += "-";
+                tv_display.setText(display);
+            }
+        });
+
+        btn_mult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                display += "*";
+                tv_display.setText(display);
+            }
+        });
+
+        btn_div.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                display += "/";
+                tv_display.setText(display);
+            }
+        });
+
         btn_res.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +81,16 @@ public class MainActivity extends AppCompatActivity {
                 if (Character.isDigit(lastCharacter)) {
                     System.out.println(result);
                 }
+            }
+        });
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentString = tv_display.getText().toString();
+                if (currentString.length() == 0) return;
+                String deletedString = currentString.substring(0, currentString.length()-1);
+                tv_display.setText(deletedString);
             }
         });
 
