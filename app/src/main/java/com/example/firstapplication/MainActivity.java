@@ -7,11 +7,55 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_display, tv_result;
     private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete;
     private String display = "";
+
+    public int setOpPriority(char op) {
+        switch(op) {
+            case '*':
+            case '/':
+                return 3;
+            case '+':
+            case '-':
+                return 2;
+            case '(':
+                return 1;
+            default:
+                return -1;
+        }
+    }
+
+    public ArrayList<String> infixToPostfix(String infix) {
+        Stack<Character> stack = new Stack<Character>();
+        ArrayList<String> postfix = new ArrayList<String>();
+        String tmp = "";
+        System.out.println(infix);
+
+        // infix --> postfix
+        for (int i = 0; i < infix.length(); i++) {
+            if (infix.charAt(i) != '+' && infix.charAt(i) != '-' && infix.charAt(i) != '*' && infix.charAt(i) != '/') {
+                tmp += infix.charAt(i);
+            }
+            else {
+                postfix.add(tmp);
+                tmp = "";
+                stack.push(infix.charAt(i));
+            }
+        }
+
+        postfix.add(tmp);
+        while (!stack.isEmpty())
+            postfix.add(stack.pop().toString());
+
+        System.out.println(postfix);
+        return postfix;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
                 char lastCharacter = result.charAt(result.length()-1);
                 // System.out.println(lastCharacter);
                 if (Character.isDigit(lastCharacter)) {
-                    System.out.println(result);
+//                    System.out.println(result);
+                    infixToPostfix(result);
                 }
             }
         });
