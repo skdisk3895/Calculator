@@ -13,14 +13,15 @@ import java.util.Stack;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_display, tv_result;
-    private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete;
+    private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete, btn_bracket;
     private String display = "";
     private String currentNumber = new String();
+    private Stack<String> bracket = new Stack<String>();
 
     public int setOpPriority(char op) {
         switch(op) {
-            case '*':
-            case '/':
+            case '×':
+            case '÷':
                 return 3;
             case '+':
             case '-':
@@ -38,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 return a + b;
             case "-":
                 return a - b;
-            case "*":
+            case "×":
                 return a * b;
-            case "/":
+            case "÷":
                 return a / b;
         }
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         // infix --> postfix
         for (int i = 0; i < infix.length(); i++) {
-            if (infix.charAt(i) != '+' && infix.charAt(i) != '-' && infix.charAt(i) != '*' && infix.charAt(i) != '/') {
+            if (infix.charAt(i) != '+' && infix.charAt(i) != '-' && infix.charAt(i) != '×' && infix.charAt(i) != '÷') {
                 tmp += infix.charAt(i);
             }
             else {
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < postfix.size(); i++) {
             String element = postfix.get(i);
-            if (!element.equals("+") && !element.equals("-") && !element.equals("*") && !element.equals("/")) {
+            if (!element.equals("+") && !element.equals("-") && !element.equals("×") && !element.equals("÷")) {
 //                System.out.println("1." + element);
                 stack.push(element);
             }
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 stack.push(Integer.toString(calc(a, b, element)));
             }
         }
-//        System.out.println(stack.peek());
+        System.out.println(stack.peek());
 
         return stack.pop();
     }
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         btn_res = findViewById(R.id.btn_res);
         btn_delete = findViewById(R.id.btn_delete);
         btn_clear = findViewById(R.id.btn_clear);
+        btn_bracket = findViewById(R.id.btn_bracket);
         btn_zero = findViewById(R.id.btn_zero);
         btn_one = findViewById(R.id.btn_one);
         btn_two = findViewById(R.id.btn_two);
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         btn_mult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "*";
+                display += "×";
                 tv_display.setText(display);
             }
         });
@@ -166,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         btn_div.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "/";
+                display += "÷";
                 tv_display.setText(display);
             }
         });
@@ -201,6 +203,59 @@ public class MainActivity extends AppCompatActivity {
                 display = "";
                 currentNumber = "";
                 tv_display.setText(display);
+                tv_result.setText("");
+            }
+        });
+
+        btn_bracket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (display.length() == 0) {
+                    display += "(";
+                    tv_display.setText(display);
+                    return;
+                }
+                char lastStr = display.charAt(display.length()-1);
+                if (Character.isDigit(lastStr)) {
+                    display += ")";
+                    tv_display.setText(display);
+                }
+                else if (lastStr == '+' || lastStr == '-' || lastStr == '×' || lastStr == '÷') {
+                    display += "(";
+                    tv_display.setText(display);
+                }
+                else if (lastStr == '(') {
+                    display += "(";
+                    tv_display.setText(display);
+                }
+                else if (lastStr == ')'){
+                    Stack<Character> stack = new Stack<Character>();
+                    for (int i = 0; i < display.length(); i++) {
+                        char element = display.charAt(i);
+                        if (element != '(' && element != ')') {
+                            continue;
+                        }
+//                        System.out.println("test" + element);
+                        if (element == '(') {
+                            stack.push('(');
+                        }
+                        else {
+                            stack.pop();
+                        }
+                    }
+                    if (stack.isEmpty())
+                        display += "×(";
+                    else
+                        display += ")";
+                    tv_display.setText(display);
+
+                    while (!stack.isEmpty())
+                        stack.pop();
+                }
+                else {
+                    display += "(";
+                    tv_display.setText(display);
+                }
             }
         });
 
