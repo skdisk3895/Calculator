@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_display, tv_result;
     private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete;
     private String display = "";
+    private String currentNumber = new String();
 
     public int setOpPriority(char op) {
         switch(op) {
@@ -99,6 +100,18 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println(stack.peek());
 
         return stack.pop();
+    }
+
+    public void insertNumberInDisplay(String number) {
+        display += number;
+        currentNumber += number;
+    }
+
+    public void checkZero() {
+        if (currentNumber.equals("0")) {
+            currentNumber = "";
+            display = "";
+        }
     }
 
     @Override
@@ -186,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 display = "";
+                currentNumber = "";
                 tv_display.setText(display);
             }
         });
@@ -193,7 +207,8 @@ public class MainActivity extends AppCompatActivity {
         btn_zero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "0";
+                if (currentNumber.equals("0")) return;
+                insertNumberInDisplay("0");
                 tv_display.setText(display);
             }
         });
@@ -201,7 +216,8 @@ public class MainActivity extends AppCompatActivity {
         btn_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "1";
+                checkZero();
+                insertNumberInDisplay("1");
                 tv_display.setText(display);
             }
         });
@@ -209,7 +225,8 @@ public class MainActivity extends AppCompatActivity {
         btn_two.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "2";
+                checkZero();
+                insertNumberInDisplay("2");
                 tv_display.setText(display);
             }
         });
@@ -217,7 +234,8 @@ public class MainActivity extends AppCompatActivity {
         btn_three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "3";
+                checkZero();
+                insertNumberInDisplay("3");
                 tv_display.setText(display);
             }
         });
@@ -225,7 +243,8 @@ public class MainActivity extends AppCompatActivity {
         btn_four.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "4";
+                checkZero();
+                insertNumberInDisplay("4");
                 tv_display.setText(display);
             }
         });
@@ -233,7 +252,8 @@ public class MainActivity extends AppCompatActivity {
         btn_five.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "5";
+                checkZero();
+                insertNumberInDisplay("5");
                 tv_display.setText(display);
             }
         });
@@ -241,7 +261,8 @@ public class MainActivity extends AppCompatActivity {
         btn_six.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "6";
+                checkZero();
+                insertNumberInDisplay("6");
                 tv_display.setText(display);
             }
         });
@@ -249,7 +270,8 @@ public class MainActivity extends AppCompatActivity {
         btn_seven.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "7";
+                checkZero();
+                insertNumberInDisplay("7");
                 tv_display.setText(display);
             }
         });
@@ -257,7 +279,8 @@ public class MainActivity extends AppCompatActivity {
         btn_eight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "8";
+                checkZero();
+                insertNumberInDisplay("8");
                 tv_display.setText(display);
             }
         });
@@ -265,7 +288,8 @@ public class MainActivity extends AppCompatActivity {
         btn_nine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display += "9";
+                checkZero();
+                insertNumberInDisplay("9");
                 tv_display.setText(display);
             }
         });
