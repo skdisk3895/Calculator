@@ -86,17 +86,17 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < postfix.size(); i++) {
             String element = postfix.get(i);
             if (!element.equals("+") && !element.equals("-") && !element.equals("*") && !element.equals("/")) {
-                System.out.println("1." + element);
+//                System.out.println("1." + element);
                 stack.push(element);
             }
             else {
-                System.out.println("2." + element);
+//                System.out.println("2." + element);
                 int a = Integer.parseInt(stack.pop());
                 int b = Integer.parseInt(stack.pop());
                 stack.push(Integer.toString(calc(a, b, element)));
             }
         }
-        System.out.println(stack.peek());
+//        System.out.println(stack.peek());
 
         return stack.pop();
     }

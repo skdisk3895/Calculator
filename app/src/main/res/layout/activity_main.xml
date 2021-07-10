@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#FFC0CB">
 
     <TextView
         android:id="@+id/tv_display"
@@ -14,6 +15,7 @@
         android:text=""
         android:textSize="40sp"
         android:gravity="right"
+        android:textColor="@color/white"
         />
 
     <TextView
@@ -23,6 +25,7 @@
         android:text=""
         android:textSize="40sp"
         android:gravity="right"
+        android:textColor="@color/white"
         />
 
     <LinearLayout
@@ -30,50 +33,41 @@
         android:layout_height="50dp"
         android:gravity="center"
         >
-
         <Button
-            android:id="@+id/btn_add"
+            android:id="@+id/btn_clear"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="+"
-            android:textSize="18sp"/>
+            android:text="C"
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
 
         <Button
-            android:id="@+id/btn_sub"
+            android:id="@+id/btn_rest"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="-"
-            android:textSize="18sp"/>
+            android:text="%"
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
 
         <Button
-            android:id="@+id/btn_mult"
+            android:id="@+id/btn_delete"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="*"
-            android:textSize="18sp"/>
+            android:text="←"
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
+
         <Button
             android:id="@+id/btn_div"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="/"
-            android:textSize="18sp"/>
-        <Button
-            android:id="@+id/btn_res"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="="
-            android:textSize="18sp"/>
-        <Button
-            android:id="@+id/btn_clear"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:text="C"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,21 +80,32 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="7"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
         <Button
             android:id="@+id/btn_eight"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="8"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
         <Button
             android:id="@+id/btn_nine"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="9"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
+        <Button
+            android:id="@+id/btn_mult"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="*"
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
 
     </LinearLayout>
     <LinearLayout
@@ -114,21 +119,32 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="4"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
         <Button
             android:id="@+id/btn_five"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="5"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
         <Button
             android:id="@+id/btn_six"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="6"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
+        <Button
+            android:id="@+id/btn_sub"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="-"
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
 
     </LinearLayout>
     <LinearLayout
@@ -142,21 +158,32 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="1"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
         <Button
             android:id="@+id/btn_two"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="2"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
         <Button
             android:id="@+id/btn_three"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="3"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="+"
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
 
     </LinearLayout>
     <LinearLayout
@@ -165,19 +192,40 @@
         android:gravity="center"
         >
         <Button
+            android:id="@+id/btn_bracket"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="()"
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
+
+        <Button
             android:id="@+id/btn_zero"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="0"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
 
         <Button
-            android:id="@+id/btn_delete"
+            android:id="@+id/btn_dot"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="←"
-            android:textSize="18sp"/>
+            android:layout_marginRight="10dp"
+            android:text="."
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
+
+        <Button
+            android:id="@+id/btn_res"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="="
+            android:textSize="18sp"
+            android:backgroundTint="#87CEFA"/>
 
     </LinearLayout>
 
