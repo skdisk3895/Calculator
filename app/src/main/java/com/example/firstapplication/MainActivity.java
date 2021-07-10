@@ -31,6 +31,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public int calc(int a, int b, String op) {
+        switch(op) {
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "*":
+                return a * b;
+            case "/":
+                return a / b;
+        }
+
+        System.out.println("Error!!");
+        return -1;
+    }
+
     public ArrayList<String> infixToPostfix(String infix) {
         Stack<Character> stack = new Stack<Character>();
         ArrayList<String> postfix = new ArrayList<String>();
@@ -45,7 +61,13 @@ public class MainActivity extends AppCompatActivity {
             else {
                 postfix.add(tmp);
                 tmp = "";
-                stack.push(infix.charAt(i));
+                if (!stack.isEmpty() && setOpPriority(stack.peek()) > setOpPriority(infix.charAt(i))) {
+                    postfix.add(stack.pop().toString());
+                    stack.push(infix.charAt(i));
+                }
+                else {
+                    stack.push(infix.charAt(i));
+                }
             }
         }
 
@@ -53,8 +75,30 @@ public class MainActivity extends AppCompatActivity {
         while (!stack.isEmpty())
             postfix.add(stack.pop().toString());
 
-        System.out.println(postfix);
         return postfix;
+    }
+
+    public String calcInfix(String exp) {
+        ArrayList<String> postfix = infixToPostfix(exp);
+        Stack<String> stack = new Stack<String>();
+        System.out.println(postfix);
+
+        for (int i = 0; i < postfix.size(); i++) {
+            String element = postfix.get(i);
+            if (!element.equals("+") && !element.equals("-") && !element.equals("*") && !element.equals("/")) {
+                System.out.println("1." + element);
+                stack.push(element);
+            }
+            else {
+                System.out.println("2." + element);
+                int a = Integer.parseInt(stack.pop());
+                int b = Integer.parseInt(stack.pop());
+                stack.push(Integer.toString(calc(a, b, element)));
+            }
+        }
+        System.out.println(stack.peek());
+
+        return stack.pop();
     }
 
     @Override
@@ -117,12 +161,12 @@ public class MainActivity extends AppCompatActivity {
         btn_res.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String result = tv_display.getText().toString();
-                char lastCharacter = result.charAt(result.length()-1);
-                // System.out.println(lastCharacter);
+                String exp = tv_display.getText().toString();
+                String result = "";
+                char lastCharacter = exp.charAt(exp.length()-1);
                 if (Character.isDigit(lastCharacter)) {
-//                    System.out.println(result);
-                    infixToPostfix(result);
+                    result = calcInfix(exp);
+                    tv_result.setText(result);
                 }
             }
         });
