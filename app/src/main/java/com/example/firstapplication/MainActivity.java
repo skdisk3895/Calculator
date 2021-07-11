@@ -13,10 +13,10 @@ import java.util.Stack;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_display, tv_result;
-    private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete, btn_bracket, btn_sign;
+    private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete, btn_bracket, btn_sign, btn_dot;
     private String display = "";
     private String currentNumber = new String();
-    private Stack<String> bracket = new Stack<String>();
+    private boolean isDot = false;
 
     public int setOpPriority(char op) {
         switch(op) {
@@ -55,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
         String operand = "";
         System.out.println(infix);
 
-        // infix --> postfix
+        // infix --> postfix 변환
         for (int i = 0; i < infix.length(); i++) {
             char element = infix.charAt(i);
-            if (Character.isDigit(element))
+            if (Character.isDigit(element) || element == '.')
                 operand += element;
             else {
                 if (operand.length() > 0) {
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         while (!stack.isEmpty())
             postfix.add(stack.pop().toString());
 
-        System.out.println("postfix : " + postfix);
+//        System.out.println("postfix : " + postfix);
         return postfix;
     }
 
@@ -123,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertNumberInDisplay(String number) {
+        char lastChr = display.charAt(display.length() - 1);
+        if (lastChr == ')')
+            display += "×";
         display += number;
         currentNumber += number;
     }
@@ -147,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         btn_div = findViewById(R.id.btn_div);
         btn_res = findViewById(R.id.btn_res);
         btn_delete = findViewById(R.id.btn_delete);
+        btn_dot = findViewById(R.id.btn_dot);
         btn_clear = findViewById(R.id.btn_clear);
         btn_bracket = findViewById(R.id.btn_bracket);
         btn_sign = findViewById(R.id.btn_sign);
@@ -166,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 display += "+";
                 tv_display.setText(display);
+                isDot = false;
             }
         });
 
@@ -174,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 display += "-";
                 tv_display.setText(display);
+                isDot = false;
             }
         });
 
@@ -182,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 display += "×";
                 tv_display.setText(display);
+                isDot = false;
             }
         });
 
@@ -190,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 display += "÷";
                 tv_display.setText(display);
+                isDot = false;
             }
         });
 
@@ -225,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 currentNumber = "";
                 tv_display.setText(display);
                 tv_result.setText("");
+                isDot = false;
             }
         });
 
@@ -238,8 +247,24 @@ public class MainActivity extends AppCompatActivity {
                 }
                 char lastStr = display.charAt(display.length()-1);
                 if (Character.isDigit(lastStr)) {
-                    display += ")";
+                    Stack<Character> stack = new Stack<Character>();
+                    for (int i = 0; i < display.length(); i++) {
+                        char element = display.charAt(i);
+                        if (element != '(' && element != ')')
+                            continue;
+                        if (element == '(')
+                            stack.push('(');
+                        else
+                            stack.pop();
+                    }
+                    if (stack.isEmpty())
+                        display += "×(";
+                    else
+                        display += ")";
                     tv_display.setText(display);
+
+                    while (!stack.isEmpty())
+                        stack.pop();
                 }
                 else if (lastStr == '+' || lastStr == '-' || lastStr == '×' || lastStr == '÷') {
                     display += "(";
@@ -277,6 +302,30 @@ public class MainActivity extends AppCompatActivity {
                     display += "(";
                     tv_display.setText(display);
                 }
+            }
+        });
+
+        btn_dot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isDot) return;
+                if (display.length() == 0) {
+                    display += "0.";
+                    currentNumber += "0.";
+                }
+                else {
+                    char lastStr = display.charAt(display.length()-1);
+                    if (!Character.isDigit(lastStr)) {
+                        display += "0.";
+                        currentNumber += "0.";
+                    }
+                    else {
+                        display += ".";
+                        currentNumber += ".";
+                    }
+                }
+                isDot = true;
+                tv_display.setText(display);
             }
         });
 
