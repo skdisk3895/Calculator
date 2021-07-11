@@ -58,13 +58,12 @@ public class MainActivity extends AppCompatActivity {
         // infix --> postfix
         for (int i = 0; i < infix.length(); i++) {
             char element = infix.charAt(i);
-            System.out.println(element);
-            if (Character.isDigit(element)) {
+            if (Character.isDigit(element))
                 operand += element;
-            }
             else {
                 if (operand.length() > 0) {
                     postfix.add(operand);
+                    operand = "";
                 }
                 switch (element) {
                     case '(':
