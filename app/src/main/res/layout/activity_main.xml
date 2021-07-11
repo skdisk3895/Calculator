@@ -49,11 +49,11 @@
             android:backgroundTint="#87CEFA"/>
 
         <Button
-            android:id="@+id/btn_rest"
+            android:id="@+id/btn_sign"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="%"
+            android:text="±"
             android:textSize="18sp"
             android:backgroundTint="#87CEFA"/>
 

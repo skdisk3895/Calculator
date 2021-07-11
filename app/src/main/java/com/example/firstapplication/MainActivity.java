@@ -110,13 +110,12 @@ public class MainActivity extends AppCompatActivity {
                 stack.push(element);
             }
             else {
-//                System.out.println("2." + element);
                 int a = Integer.parseInt(stack.pop());
                 int b = Integer.parseInt(stack.pop());
-                stack.push(Integer.toString(calc(a, b, element)));
+                System.out.println(calc(b, a, element));
+                stack.push(Integer.toString(calc(b, a, element)));
             }
         }
-        System.out.println(stack.peek());
 
         return stack.pop();
     }
