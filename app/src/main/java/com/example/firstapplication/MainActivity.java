@@ -52,31 +52,50 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> infixToPostfix(String infix) {
         Stack<Character> stack = new Stack<Character>();
         ArrayList<String> postfix = new ArrayList<String>();
-        String tmp = "";
+        String operand = "";
         System.out.println(infix);
 
         // infix --> postfix
         for (int i = 0; i < infix.length(); i++) {
-            if (infix.charAt(i) != '+' && infix.charAt(i) != '-' && infix.charAt(i) != '×' && infix.charAt(i) != '÷') {
-                tmp += infix.charAt(i);
+            char element = infix.charAt(i);
+            System.out.println(element);
+            if (Character.isDigit(element)) {
+                operand += element;
             }
             else {
-                postfix.add(tmp);
-                tmp = "";
-                if (!stack.isEmpty() && setOpPriority(stack.peek()) > setOpPriority(infix.charAt(i))) {
-                    postfix.add(stack.pop().toString());
-                    stack.push(infix.charAt(i));
+                if (operand.length() > 0) {
+                    postfix.add(operand);
                 }
-                else {
-                    stack.push(infix.charAt(i));
+                switch (element) {
+                    case '(':
+                        stack.push(element);
+                        break;
+                    case ')':
+                        while (true) {
+                            String pop = stack.pop().toString();
+                            if (pop.equals("("))
+                                break;
+                            postfix.add(pop);
+                        }
+                        break;
+                    case '+':
+                    case '-':
+                    case '×':
+                    case '÷':
+                        while (!stack.isEmpty() && setOpPriority(stack.peek()) > setOpPriority(element))
+                            postfix.add(stack.pop().toString());
+                        stack.push(element);
+                        break;
                 }
             }
         }
 
-        postfix.add(tmp);
+        if (operand.length() > 0)
+            postfix.add(operand);
         while (!stack.isEmpty())
             postfix.add(stack.pop().toString());
 
+        System.out.println("postfix : " + postfix);
         return postfix;
     }
 
@@ -179,8 +198,9 @@ public class MainActivity extends AppCompatActivity {
                 String exp = tv_display.getText().toString();
                 String result = "";
                 char lastCharacter = exp.charAt(exp.length()-1);
-                if (Character.isDigit(lastCharacter)) {
+                if (Character.isDigit(lastCharacter) || lastCharacter == ')') {
                     result = calcInfix(exp);
+                    System.out.println(result);
                     tv_result.setText(result);
                 }
             }
