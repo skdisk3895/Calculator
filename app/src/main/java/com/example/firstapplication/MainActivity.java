@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // infix --> postfix 변환
         for (int i = 0; i < infix.length(); i++) {
             char element = infix.charAt(i);
-            if (Character.isDigit(element) || element == '.')
+            if (Character.isDigit(element) || element == '.' || element == '−')
                 operand += element;
             else {
                 if (operand.length() > 0) {
@@ -91,10 +92,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (operand.length() > 0)
             postfix.add(operand);
-        while (!stack.isEmpty())
-            postfix.add(stack.pop().toString());
+        while (!stack.isEmpty()) {
+            char pop = stack.pop();
+            if (pop == '(')
+                continue;
+            postfix.add(Character.toString(pop));
+        }
 
-//        System.out.println("postfix : " + postfix);
         return postfix;
     }
 
@@ -102,8 +106,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> postfix = infixToPostfix(exp);
         Stack<String> stack = new Stack<String>();
 
+        System.out.println(postfix);
+
         for (int i = 0; i < postfix.size(); i++) {
             String element = postfix.get(i);
+            if (element.contains("−")) {
+                element = element.replace("−", "-");
+            }
             if (!element.equals("+") && !element.equals("-") && !element.equals("×") && !element.equals("÷"))
                 stack.push(element);
             else {
@@ -123,9 +132,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertNumberInDisplay(String number) {
-        char lastChr = display.charAt(display.length() - 1);
-        if (lastChr == ')')
-            display += "×";
+        if (display.length() > 0) {
+            char lastChr = display.charAt(display.length() - 1);
+            if (lastChr == ')')
+                display += "×";
+        }
         display += number;
         currentNumber += number;
     }
@@ -168,6 +179,9 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (display.length() == 0) return;
+                char lastChr = display.charAt(display.length()-1);
+                if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "+";
                 tv_display.setText(display);
                 isDot = false;
@@ -177,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
         btn_sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (display.length() == 0) return;
+                char lastChr = display.charAt(display.length()-1);
+                if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "-";
                 tv_display.setText(display);
                 isDot = false;
@@ -186,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
         btn_mult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (display.length() == 0) return;
+                char lastChr = display.charAt(display.length()-1);
+                if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "×";
                 tv_display.setText(display);
                 isDot = false;
@@ -195,6 +215,9 @@ public class MainActivity extends AppCompatActivity {
         btn_div.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (display.length() == 0) return;
+                char lastChr = display.charAt(display.length()-1);
+                if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "÷";
                 tv_display.setText(display);
                 isDot = false;
@@ -204,13 +227,18 @@ public class MainActivity extends AppCompatActivity {
         btn_res.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (display.length() == 0) return;
                 String exp = tv_display.getText().toString();
                 String result = "";
                 char lastCharacter = exp.charAt(exp.length()-1);
                 if (Character.isDigit(lastCharacter) || lastCharacter == ')') {
-                    result = calcInfix(exp);
-                    System.out.println(result);
-                    tv_result.setText(result);
+                    try {
+                        result = calcInfix(exp);
+                        System.out.println("result : " + result);
+                        tv_result.setText(result);
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "잘못된 수식입니다.", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -302,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
                     display += "(";
                     tv_display.setText(display);
                 }
+                currentNumber = "";
             }
         });
 
@@ -332,7 +361,23 @@ public class MainActivity extends AppCompatActivity {
         btn_sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (display.length() == 0) {
+                    display += "(−";
+                }
+                else {
+                    if (display.length() != currentNumber.length()) {
+                        if (currentNumber.length() > 0)
+                            display = display.substring(0, display.length() - currentNumber.length()) + "(−" + display.substring(display.length() - currentNumber.length(), display.length());
+                        else
+                            display = display.substring(0, display.length() - currentNumber.length()) + "(−" + display.substring(display.length() - currentNumber.length(), display.length());
+                    }
+                    else {
+                        display = display.substring(0, display.length() - currentNumber.length()) + "(−" + display.substring(display.length() - currentNumber.length(), display.length());
+                    }
+                    System.out.println(display.substring(display.length() - currentNumber.length()));
+                }
 
+                tv_display.setText(display);
             }
         });
 
