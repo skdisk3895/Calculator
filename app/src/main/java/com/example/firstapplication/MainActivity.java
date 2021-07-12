@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete, btn_bracket, btn_sign, btn_dot;
     private String display = "";
     private String currentNumber = new String();
+    private String prevExp = new String();
+    private ArrayList<String> operands = new ArrayList<>();
     private boolean isDot = false;
 
     public int setOpPriority(char op) {
@@ -183,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "+";
+                operands.add(currentNumber);
+                currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
             }
@@ -195,6 +199,8 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "-";
+                operands.add(currentNumber);
+                currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
             }
@@ -207,6 +213,8 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "×";
+                operands.add(currentNumber);
+                currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
             }
@@ -219,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "÷";
+                operands.add(currentNumber);
+                currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
             }
@@ -259,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 display = "";
                 currentNumber = "";
+                operands.clear();
                 tv_display.setText(display);
                 tv_result.setText("");
                 isDot = false;
@@ -361,22 +372,42 @@ public class MainActivity extends AppCompatActivity {
         btn_sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (display.length() == 0) {
-                    display += "(−";
-                }
-                else {
-                    if (display.length() != currentNumber.length()) {
-                        if (currentNumber.length() > 0)
-                            display = display.substring(0, display.length() - currentNumber.length()) + "(−" + display.substring(display.length() - currentNumber.length(), display.length());
-                        else
-                            display = display.substring(0, display.length() - currentNumber.length()) + "(−" + display.substring(display.length() - currentNumber.length(), display.length());
+                boolean findSign = false;
+                for (int i = display.length() - 1; i >= 0; i--) {
+                    if (display.charAt(i) == '+' || display.charAt(i) == '-' || display.charAt(i) == '×' || display.charAt(i) == '÷' || display.charAt(i) == '(')
+                        break;
+                    if (display.charAt(i) == '−') {
+                        findSign = true;
+                        break;
                     }
-                    else {
-                        display = display.substring(0, display.length() - currentNumber.length()) + "(−" + display.substring(display.length() - currentNumber.length(), display.length());
-                    }
-                    System.out.println(display.substring(display.length() - currentNumber.length()));
                 }
 
+                if (findSign) {
+                    int signIndex = display.lastIndexOf("(−");
+                    display = display.substring(0, signIndex) + "" + display.substring(signIndex + 2, display.length());
+                }
+                else {
+                    if (display.length() == 0 || display.length() == 1) {
+                        display = "(−" + display;
+                        tv_display.setText(display);
+                        return;
+                    }
+
+                    char lastChr = display.charAt(display.length()-1);
+                    if (!Character.isDigit(lastChr)) {
+                        display += "(−";
+                    }
+                    else {
+                        int idx = 0;
+                        for (int i = display.length() - 1; i >= 0; i--) {
+                            if (!Character.isDigit(display.charAt(i))) {
+                                idx = i + 1;
+                                break;
+                            }
+                        }
+                        display = display.substring(0, idx) + "(−" + display.substring(idx, display.length());
+                    }
+                }
                 tv_display.setText(display);
             }
         });
