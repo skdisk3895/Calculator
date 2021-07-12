@@ -1,5 +1,7 @@
 package com.example.firstapplication;
 
+import com.example.firstapplication.Calc.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,8 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Stack;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,121 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_zero, btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_add, btn_sub, btn_mult, btn_div, btn_res, btn_clear, btn_delete, btn_bracket, btn_sign, btn_dot;
     private String display = "";
     private String currentNumber = new String();
-    private String prevExp = new String();
-    private ArrayList<String> operands = new ArrayList<>();
     private boolean isDot = false;
-
-    public int setOpPriority(char op) {
-        switch(op) {
-            case '×':
-            case '÷':
-                return 3;
-            case '+':
-            case '-':
-                return 2;
-            case '(':
-                return 1;
-            default:
-                return -1;
-        }
-    }
-
-    public double calc(double a, double b, String op) {
-        switch(op) {
-            case "+":
-                return a + b;
-            case "-":
-                return a - b;
-            case "×":
-                return a * b;
-            case "÷":
-                return a / b;
-        }
-
-        System.out.println("Error!!");
-        return -1;
-    }
-
-    public ArrayList<String> infixToPostfix(String infix) {
-        Stack<Character> stack = new Stack<Character>();
-        ArrayList<String> postfix = new ArrayList<String>();
-        String operand = "";
-        System.out.println(infix);
-
-        // infix --> postfix 변환
-        for (int i = 0; i < infix.length(); i++) {
-            char element = infix.charAt(i);
-            if (Character.isDigit(element) || element == '.' || element == '−')
-                operand += element;
-            else {
-                if (operand.length() > 0) {
-                    postfix.add(operand);
-                    operand = "";
-                }
-                switch (element) {
-                    case '(':
-                        stack.push(element);
-                        break;
-                    case ')':
-                        while (true) {
-                            String pop = stack.pop().toString();
-                            if (pop.equals("("))
-                                break;
-                            postfix.add(pop);
-                        }
-                        break;
-                    case '+':
-                    case '-':
-                    case '×':
-                    case '÷':
-                        while (!stack.isEmpty() && setOpPriority(stack.peek()) > setOpPriority(element))
-                            postfix.add(stack.pop().toString());
-                        stack.push(element);
-                        break;
-                }
-            }
-        }
-
-        if (operand.length() > 0)
-            postfix.add(operand);
-        while (!stack.isEmpty()) {
-            char pop = stack.pop();
-            if (pop == '(')
-                continue;
-            postfix.add(Character.toString(pop));
-        }
-
-        return postfix;
-    }
-
-    public String calcInfix(String exp) {
-        ArrayList<String> postfix = infixToPostfix(exp);
-        Stack<String> stack = new Stack<String>();
-
-        System.out.println(postfix);
-
-        for (int i = 0; i < postfix.size(); i++) {
-            String element = postfix.get(i);
-            if (element.contains("−")) {
-                element = element.replace("−", "-");
-            }
-            if (!element.equals("+") && !element.equals("-") && !element.equals("×") && !element.equals("÷"))
-                stack.push(element);
-            else {
-                double a = Double.parseDouble(stack.pop());
-                double b = Double.parseDouble(stack.pop());
-                double result = calc(b, a, element);
-                if (result == (int)result) {
-                    stack.push(Integer.toString((int)result));
-                }
-                else {
-                    stack.push(Double.toString(result));
-                }
-            }
-        }
-
-        return stack.pop();
-    }
 
     public void insertNumberInDisplay(String number) {
         if (display.length() > 0) {
@@ -185,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "+";
-                operands.add(currentNumber);
                 currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
@@ -199,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "-";
-                operands.add(currentNumber);
                 currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
@@ -213,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "×";
-                operands.add(currentNumber);
                 currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
@@ -227,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 char lastChr = display.charAt(display.length()-1);
                 if (!Character.isDigit(lastChr) && lastChr != ')') return;
                 display += "÷";
-                operands.add(currentNumber);
                 currentNumber = "";
                 tv_display.setText(display);
                 isDot = false;
@@ -243,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 char lastCharacter = exp.charAt(exp.length()-1);
                 if (Character.isDigit(lastCharacter) || lastCharacter == ')') {
                     try {
-                        result = calcInfix(exp);
+                        result = Calc.calcInfix(exp);
                         System.out.println("result : " + result);
                         tv_result.setText(result);
                     } catch (Exception e) {
@@ -269,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 display = "";
                 currentNumber = "";
-                operands.clear();
                 tv_display.setText(display);
                 tv_result.setText("");
                 isDot = false;
@@ -285,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 char lastStr = display.charAt(display.length()-1);
-                if (Character.isDigit(lastStr)) {
+                if (Character.isDigit(lastStr) || lastStr == ')') {
                     Stack<Character> stack = new Stack<Character>();
                     for (int i = 0; i < display.length(); i++) {
                         char element = display.charAt(i);
@@ -295,38 +178,6 @@ public class MainActivity extends AppCompatActivity {
                             stack.push('(');
                         else
                             stack.pop();
-                    }
-                    if (stack.isEmpty())
-                        display += "×(";
-                    else
-                        display += ")";
-                    tv_display.setText(display);
-
-                    while (!stack.isEmpty())
-                        stack.pop();
-                }
-                else if (lastStr == '+' || lastStr == '-' || lastStr == '×' || lastStr == '÷') {
-                    display += "(";
-                    tv_display.setText(display);
-                }
-                else if (lastStr == '(') {
-                    display += "(";
-                    tv_display.setText(display);
-                }
-                else if (lastStr == ')'){
-                    Stack<Character> stack = new Stack<Character>();
-                    for (int i = 0; i < display.length(); i++) {
-                        char element = display.charAt(i);
-                        if (element != '(' && element != ')') {
-                            continue;
-                        }
-//                        System.out.println("test" + element);
-                        if (element == '(') {
-                            stack.push('(');
-                        }
-                        else {
-                            stack.pop();
-                        }
                     }
                     if (stack.isEmpty())
                         display += "×(";
