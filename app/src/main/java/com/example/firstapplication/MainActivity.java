@@ -1,7 +1,5 @@
 package com.example.firstapplication;
 
-import com.example.firstapplication.Calc.*;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
