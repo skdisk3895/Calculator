@@ -7,15 +7,15 @@
     android:orientation="vertical"
     tools:context=".MainActivity"
     android:background="#FFC0CB"
-    android:weightSum="10">
+    android:weightSum="7">
 
     <TextView
         android:id="@+id/tv_display"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="1.5"
         android:text=""
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:gravity="right"
         android:textColor="@color/white"
         />
@@ -24,23 +24,25 @@
         android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.8"
-        android:text=""
-        android:autoSizeTextType="uniform"
+        android:layout_weight="0.5"
+        android:text="-123456789"
+        android:textSize="18sp"
         android:gravity="right"
         android:textColor="@color/white"
         />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="0px"
+        android:layout_weight="0.02"
+        android:layout_marginTop="10dp"
         android:background="@color/white"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="35dp"
         android:gravity="center"
         android:weightSum="4"
         >
@@ -228,7 +230,7 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:layout_weight="1"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:weightSum="4"
         >
         <Button
