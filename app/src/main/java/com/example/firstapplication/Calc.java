@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class Calc {
 
-    static int setOpPriority(char op) {
+    public static int setOpPriority(char op) {
         switch(op) {
             case '×':
             case '÷':
@@ -20,7 +20,7 @@ public class Calc {
         }
     }
 
-    static double calc(double a, double b, String op) {
+    public static double calc(double a, double b, String op) {
         switch(op) {
             case "+":
                 return a + b;
@@ -36,7 +36,7 @@ public class Calc {
         return -1;
     }
 
-    static ArrayList<String> infixToPostfix(String infix) {
+    public static ArrayList<String> infixToPostfix(String infix) {
         Stack<Character> stack = new Stack<Character>();
         ArrayList<String> postfix = new ArrayList<String>();
         String operand = "";
@@ -88,7 +88,7 @@ public class Calc {
         return postfix;
     }
 
-    static String calcInfix(String exp) {
+    public static String calcInfix(String exp) {
         ArrayList<String> postfix = infixToPostfix(exp);
         Stack<String> stack = new Stack<String>();
 
